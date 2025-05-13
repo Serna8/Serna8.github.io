@@ -1,12 +1,5 @@
-// Supabase Initialization
-const supabaseUrl = 'https://scszlluerojbaasvakxd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjc3psbHVlcm9qYmFhc3Zha3hkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzE4NzgsImV4cCI6MjA2Mjc0Nzg3OH0.8LScuEyHllzwvqj98bbxgdusjxZnoKn4_Gt0KJX4HVc';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-// Variables Globales
 const correctPassword = "12/12/2023";
 
-// Función para verificar la clave
 function checkPassword() {
   const input = document.getElementById("password").value;
   const login = document.getElementById("login");
@@ -17,112 +10,113 @@ function checkPassword() {
     login.classList.add("hidden");
     app.classList.remove("hidden");
     loadData();
-    loadFotos();
-    loadComentarios();
   } else {
     error.textContent = "Clave incorrecta. Intenta de nuevo.";
   }
 }
 
-// Función para cargar datos de configuración
-async function loadData() {
-  const { data, error } = await supabase
-    .from('configuracion')
-    .select('*')
-    .limit(1)
-    .single();
-
-  if (data && !error) {
-    document.body.style.backgroundColor = data.fondo_color;
-    document.getElementById("colorPicker").value = data.fondo_color;
-  }
-}
-
-// Función para guardar color de fondo
-async function saveColor() {
+function saveData() {
+  const text = document.getElementById("textArea").value;
   const color = document.getElementById("colorPicker").value;
-  await supabase
-    .from('configuracion')
-    .upsert([{ id: '1', fondo_color: color }], { onConflict: ['id'] });
-
+  localStorage.setItem("recuerdoTexto", text);
+  localStorage.setItem("colorFondo", color);
   document.body.style.backgroundColor = color;
-  alert("Fondo guardado con éxito!");
+  document.getElementById("saveMsg").textContent = "¡Frase Guardada!";
 }
 
-// Función para cargar fotos
-async function loadFotos() {
-  const { data, error } = await supabase
-    .from('fotos')
-    .select('*');
-
-  if (data && !error) {
-    const fotosContainer = document.getElementById("fotosContainer");
-    fotosContainer.innerHTML = '';
-    data.forEach(foto => {
-      const img = document.createElement('img');
-      img.src = foto.url;
-      img.alt = "Foto de recuerdo";
-      img.style.width = '200px';
-      img.style.margin = '10px';
-      fotosContainer.appendChild(img);
-    });
+function loadData() {
+  const savedText = localStorage.getItem("recuerdoTexto");
+  const savedColor = localStorage.getItem("colorFondo");
+  if (savedText) document.getElementById("textArea").value = savedText;
+  if (savedColor) {
+    document.body.style.backgroundColor = savedColor;
+    document.getElementById("colorPicker").value = savedColor;
   }
 }
 
 // Función para subir fotos
-async function uploadFoto() {
+function uploadPhoto() {
   const fileInput = document.getElementById("fileInput");
   const file = fileInput.files[0];
-  const { data, error } = await supabase.storage
-    .from('fotos')
-    .upload('public/' + file.name, file);
-
-  if (data && !error) {
-    const { publicURL, error } = supabase.storage
-      .from('fotos')
-      .getPublicUrl('public/' + file.name);
-
-    if (publicURL) {
-      await supabase
-        .from('fotos')
-        .insert([{ url: publicURL }]);
-      loadFotos();
-    }
+  
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const photoUrl = event.target.result;
+      savePhoto(photoUrl);
+      displayPhotos();
+    };
+    reader.readAsDataURL(file);
   }
 }
 
-// Función para guardar comentario
-async function saveComentario() {
-  const comentario = document.getElementById("comentariosText").value;
-  await supabase
-    .from('comentarios')
-    .insert([{ comentario }]);
-
-  loadComentarios();
+function savePhoto(photoUrl) {
+  const photos = JSON.parse(localStorage.getItem("photos")) || [];
+  photos.push(photoUrl);
+  localStorage.setItem("photos", JSON.stringify(photos));
 }
 
-// Función para cargar comentarios
-async function loadComentarios() {
-  const { data, error } = await supabase
-    .from('comentarios')
-    .select('*');
+function displayPhotos() {
+  const photoGallery = document.getElementById("photoGallery");
+  const photos = JSON.parse(localStorage.getItem("photos")) || [];
+  photoGallery.innerHTML = "";
 
-  if (data && !error) {
-    const comentariosContainer = document.getElementById("comentariosContainer");
-    comentariosContainer.innerHTML = '';
-    data.forEach(comentario => {
-      const p = document.createElement('p');
-      p.textContent = comentario.comentario;
-      comentariosContainer.appendChild(p);
-    });
-  }
+  photos.forEach((photo, index) => {
+    const imgElement = document.createElement("img");
+    imgElement.src = photo;
+    imgElement.alt = "Foto de recuerdo";
+    imgElement.style.width = "100px";
+    imgElement.style.height = "100px";
+    
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Eliminar";
+    deleteButton.onclick = function() {
+      deletePhoto(index);
+    };
+
+    const photoContainer = document.createElement("div");
+    photoContainer.appendChild(imgElement);
+    photoContainer.appendChild(deleteButton);
+    photoGallery.appendChild(photoContainer);
+  });
 }
 
-// Función para cerrar sesión
-function logout() {
-  const login = document.getElementById("login");
-  const app = document.getElementById("app");
-
-  login.classList.remove("hidden");
-  app.classList.add("hidden");
+function deletePhoto(index) {
+  const photos = JSON.parse(localStorage.getItem("photos")) || [];
+  photos.splice(index, 1);
+  localStorage.setItem("photos", JSON.stringify(photos));
+  displayPhotos();
 }
+
+// Función para guardar comentarios
+function saveComment() {
+  const commentText = document.getElementById("comentariosTextArea").value;
+  const comments = JSON.parse(localStorage.getItem("comments")) || [];
+  comments.push(commentText);
+  localStorage.setItem("comments", JSON.stringify(comments));
+  document.getElementById("comentariosTextArea").value = "";
+  document.getElementById("commentMsg").textContent = "¡Comentario Guardado!";
+}
+
+// Función para mostrar comentarios
+function displayComments() {
+  const comments = JSON.parse(localStorage.getItem("comments")) || [];
+  comments.forEach(comment => {
+    const commentElement = document.createElement("p");
+    commentElement.textContent = comment;
+    document.getElementById("comentariosSection").appendChild(commentElement);
+  });
+}
+
+// Función para guardar configuración
+function saveConfiguration() {
+  const color = document.getElementById("colorPicker").value;
+  localStorage.setItem("colorFondo", color);
+  document.body.style.backgroundColor = color;
+  document.getElementById("configMsg").textContent = "¡Configuración Guardada!";
+}
+
+window.onload = function() {
+  displayPhotos();
+  displayComments();
+};
