@@ -1,10 +1,10 @@
 // Crear instancia de Supabase
 const supabase = supabase.createClient('https://scszlluerojbaasvakxd.supabase.co', 'tu_clave_api');
 
-// Función para verificar el password (aquí puedes manejar la autenticación)
+// Función para verificar la contraseña (aquí puedes manejar la autenticación)
 function checkPassword() {
   const password = document.getElementById('password').value;
-  if (password === 'tu_fecha') {  // La fecha especial
+  if (password === '12/12/2023') {  // La fecha especial
     document.getElementById('login').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
   } else {
