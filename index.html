@@ -4,16 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Recuerdos</title>
-
-  <!-- Enlace a la hoja de estilo CSS externa -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Enlace a la librería de font-awesome para iconos -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-  <!-- Sección de login -->
   <div id="login">
     <h2>Ingresa la fecha especial</h2>
     <input type="password" id="password" placeholder="DD/MM/AAAA">
@@ -21,41 +15,33 @@
     <p id="error"></p>
   </div>
 
-  <!-- Sección principal de la app -->
   <div id="app" class="hidden">
     <h1>💖 Mis Recuerdos</h1>
     
-    <!-- Sección de frases -->
     <textarea id="textArea" placeholder="Escribe aquí tus frases..."></textarea>
     <input type="color" id="colorPicker">
     <button onclick="saveData()">Guardar</button>
     <p class="saved" id="saveMsg"></p>
 
-    <!-- Sección de subir fotos -->
     <div class="photo-upload-container">
       <input type="file" id="photoInput" accept="image/*">
       <button onclick="uploadPhoto()">Subir Foto</button>
       <div class="photo-gallery" id="photoGallery"></div>
     </div>
 
-    <!-- Sección de comentarios -->
     <div class="comment-section">
       <textarea id="commentInput" placeholder="Escribe un comentario sobre la relación..."></textarea>
       <button onclick="saveComment()">Guardar Comentario</button>
       <p id="commentMessage" class="saved"></p>
     </div>
 
-    <!-- Configuración -->
     <div class="settings-section">
       <label for="backgroundColor">Elige un fondo para la página:</label>
       <input type="color" id="backgroundColor" onchange="changeBackgroundColor()">
     </div>
   </div>
 
-  <!-- Librería de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-  <!-- Enlace al archivo JavaScript externo -->
   <script src="script.js"></script>
 
 </body>
