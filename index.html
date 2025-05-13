@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Recuerdos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login">
+    <h2>Ingresa la fecha especial</h2>
+    <input type="password" id="password" placeholder="DD/MM/AAAA">
+    <button onclick="checkPassword()">Entrar</button>
+    <p id="error"></p>
+  </div>
+
+  <div id="app" class="hidden">
+    <h1>💖 Mis Recuerdos</h1>
+    <textarea id="textArea" placeholder="Escribe aquí tus frases..."></textarea>
+    <input type="color" id="colorPicker">
+    <button onclick="saveData()">Guardar</button>
+    <p class="saved" id="saveMsg"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
