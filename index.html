@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Recuerdos</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,39 +17,37 @@
     <h1>💖 Mis Recuerdos</h1>
 
     <!-- Sección de fotos -->
-    <div id="fotos">
-      <h2>Fotos de Momentos Especiales</h2>
-      <input type="file" id="fileInput" accept="image/*" onchange="uploadFoto()">
-      <div id="fotosContainer"></div>
+    <div id="photoSection">
+      <h2>Fotos de Momentos Compartidos</h2>
+      <input type="file" id="fileInput" onchange="uploadPhoto()">
+      <div id="photoGallery"></div>
     </div>
 
     <!-- Sección de frases -->
-    <div id="frases">
+    <div id="frasesSection">
       <h2>Frases de Pareja</h2>
       <textarea id="textArea" placeholder="Escribe aquí tus frases..."></textarea>
-      <button onclick="saveData()">Guardar</button>
-      <p id="saveMsg"></p>
+      <button onclick="saveData()">Guardar Frase</button>
+      <p class="saved" id="saveMsg"></p>
     </div>
 
     <!-- Sección de comentarios -->
-    <div id="comentarios">
-      <h2>Comentarios de la Relación</h2>
-      <textarea id="comentariosText" placeholder="Escribe algo para mejorar la relación..."></textarea>
-      <button onclick="saveComentario()">Guardar Comentario</button>
-      <div id="comentariosContainer"></div>
+    <div id="comentariosSection">
+      <h2>Comentarios de Relación</h2>
+      <textarea id="comentariosTextArea" placeholder="Escribe tus comentarios..."></textarea>
+      <button onclick="saveComment()">Guardar Comentario</button>
+      <p class="saved" id="commentMsg"></p>
     </div>
 
-    <!-- Configuración -->
-    <div id="configuracion">
-      <h2>Configuración de Fondo</h2>
-      <input type="color" id="colorPicker" onchange="saveColor()">
-      <p>Selecciona el fondo de tu página.</p>
+    <!-- Sección de configuración -->
+    <div id="configuracionSection">
+      <h2>Configuración</h2>
+      <input type="color" id="colorPicker">
+      <button onclick="saveConfiguration()">Guardar Configuración</button>
+      <p class="saved" id="configMsg"></p>
     </div>
-
-    <button onclick="logout()">Cerrar sesión</button>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.16.0/dist/supabase.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
