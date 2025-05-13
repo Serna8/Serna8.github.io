@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Recuerdos</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,12 +16,41 @@
 
   <div id="app" class="hidden">
     <h1>💖 Mis Recuerdos</h1>
-    <textarea id="textArea" placeholder="Escribe aquí tus frases..."></textarea>
-    <input type="color" id="colorPicker">
-    <button onclick="saveData()">Guardar</button>
-    <p class="saved" id="saveMsg"></p>
+
+    <!-- Sección de fotos -->
+    <div id="fotos">
+      <h2>Fotos de Momentos Especiales</h2>
+      <input type="file" id="fileInput" accept="image/*" onchange="uploadFoto()">
+      <div id="fotosContainer"></div>
+    </div>
+
+    <!-- Sección de frases -->
+    <div id="frases">
+      <h2>Frases de Pareja</h2>
+      <textarea id="textArea" placeholder="Escribe aquí tus frases..."></textarea>
+      <button onclick="saveData()">Guardar</button>
+      <p id="saveMsg"></p>
+    </div>
+
+    <!-- Sección de comentarios -->
+    <div id="comentarios">
+      <h2>Comentarios de la Relación</h2>
+      <textarea id="comentariosText" placeholder="Escribe algo para mejorar la relación..."></textarea>
+      <button onclick="saveComentario()">Guardar Comentario</button>
+      <div id="comentariosContainer"></div>
+    </div>
+
+    <!-- Configuración -->
+    <div id="configuracion">
+      <h2>Configuración de Fondo</h2>
+      <input type="color" id="colorPicker" onchange="saveColor()">
+      <p>Selecciona el fondo de tu página.</p>
+    </div>
+
+    <button onclick="logout()">Cerrar sesión</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.16.0/dist/supabase.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
